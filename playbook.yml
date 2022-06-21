@@ -18,12 +18,24 @@
         dest: ~/bootcamp-app/
         clone: yes
         update: yes
-        
-    - name: Install "Weight-Tracker" node.js package.
-      script: ~/fin.sh
-        
+    
+    - name: Copy ENV file to bootcamp-app
+      ansible.builtin.copy:
+        src: ~/env
+        dest: ~/bootcamp-app/.env
+        follow: no
+  
     - name: Creates an entry in crontab
       ansible.builtin.cron:
         name: "run webapp"
         special_time: reboot
         job: "cd ~/bootcamp-app/ && npm run dev"
+        
+    - name: Install "Weight-Tracker" node.js package.
+      script: ~/postfresh.sh
+     
+    - name: Reboot remote servers
+      become: yes
+      ansible.builtin.reboot:
+        msg: "Reboot by Ansible"
+        pre_reboot_delay: 1
