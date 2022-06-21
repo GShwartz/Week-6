@@ -1,0 +1,30 @@
+---
+- hosts: webservers
+  tasks:
+    - name: Download NodeJS 14.X Source
+      shell: curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+    
+    - name: Clone the Webapp repo from github
+      ansible.builtin.git:
+        repo: https://github.com/GShwartz/bootcamp-app.git
+        dest: ~/bootcamp-app/
+        clone: yes
+        update: yes
+        
+    - name: Install "Weight-Tracker" node.js package.
+      script: ~/fin.sh
+        
+    - name: Creates an entry in crontab
+      ansible.builtin.cron:
+        name: "run webapp"
+        special_time: reboot
+        job: "cd ~/bootcamp-app/ && npm run dev"
+        
+    - name: Install NodeJS 
+      become: yes
+      apt:
+        name: nodejs
+        state: present
+      tags:
+         - package
+        
