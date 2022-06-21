@@ -24,8 +24,17 @@ resource "azurerm_subnet" "db_subnet" {
   name                 = "Databases"
   resource_group_name  = azurerm_resource_group.weight_tracker_rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
+  service_endpoints    = ["Microsoft.Storage"]
 
-  depends_on = [azurerm_resource_group.weight_tracker_rg]
+  delegation {
+    name = "fs"
+    service_delegation {
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+  }
+
+  depends_on = [azurerm_virtual_network.vnet]
 
 }
 
@@ -115,21 +124,21 @@ resource "azurerm_availability_set" "availability_set" {
 }
 
 # Create Private DNS Zone for PostGreSQL
-#resource "azurerm_private_dns_zone" "dbdns" {
-#  name                = "${var.db_dns_zone_name}.postgres.database.azure.com"
-#  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
-#
-#  depends_on = [azurerm_virtual_network.vnet]
-#
-#}
+resource "azurerm_private_dns_zone" "dbdns" {
+  name                = "${var.db_dns_zone_name}-pdz.postgres.database.azure.com"
+  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
+
+  depends_on = [azurerm_virtual_network.vnet]
+
+}
 
 # Link Private DNS Zone to Virtual Network
-#resource "azurerm_private_dns_zone_virtual_network_link" "zone_link" {
-#  name                  = "weightracker"
-#  private_dns_zone_name = azurerm_private_dns_zone.dbdns.name
-#  resource_group_name   = azurerm_resource_group.weight_tracker_rg.name
-#  virtual_network_id    = azurerm_virtual_network.vnet.id
-#
-#  depends_on = [azurerm_virtual_network.vnet]
-#
-#}
+resource "azurerm_private_dns_zone_virtual_network_link" "zone_link" {
+  name                  = "weightracker"
+  private_dns_zone_name = azurerm_private_dns_zone.dbdns.name
+  resource_group_name   = azurerm_resource_group.weight_tracker_rg.name
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+
+  depends_on = [azurerm_virtual_network.vnet]
+
+}

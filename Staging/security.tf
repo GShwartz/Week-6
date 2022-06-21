@@ -101,7 +101,7 @@ resource "azurerm_network_security_group" "db_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "5432"
-    source_address_prefix      = "10.0.1.0/24"
+    source_address_prefixes    = azurerm_subnet.app_subnet.address_prefixes
     destination_address_prefix = "10.0.2.0/28"
 
   }
@@ -120,7 +120,7 @@ resource "azurerm_network_security_group" "db_nsg" {
 
   }
 
-  depends_on = [azurerm_virtual_network.vnet]
+  depends_on = [azurerm_virtual_network.vnet, azurerm_subnet.app_subnet]
 }
 
 #### Network ####

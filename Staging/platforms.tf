@@ -58,3 +58,5 @@ resource "azurerm_virtual_machine" "weight_tracker" {
     disable_password_authentication = false
   }
 }
+
+
