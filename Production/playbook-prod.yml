@@ -24,16 +24,25 @@
         src: ~/env-prod
         dest: ~/bootcamp-app/.env
         follow: no
-  
+        
+    # Install Webapp package with NodeJS
+    - name: Install WebApp JS Package
+      ansible.builtin.shell: 
+        chdir: ~/bootcamp-app/
+        cmd: npm install
+        
+    # Sync & Init app with DB
+    - name: Initalize App's Database
+      ansible.builtin.shell: 
+        chdir: ~/bootcamp-app/
+        cmd: npm run initdb
+    
     - name: Creates an entry in crontab
       ansible.builtin.cron:
         name: "run webapp"
         special_time: reboot
-        job: "cd ~/bootcamp-app/ && npm run dev"
-        
-    - name: Install "Weight-Tracker" node.js package.
-      script: ~/postfresh.sh
-     
+        job: "cd ~/bootcamp-app/ && npm run dev"    
+    
     - name: Reboot remote servers
       become: yes
       ansible.builtin.reboot:
