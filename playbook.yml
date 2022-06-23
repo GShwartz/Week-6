@@ -26,6 +26,8 @@
         src: ~/{{ env }}
         dest: ~/bootcamp-app/.env
         follow: no
+        #with_items:
+        #  - "{{ env }}"
   
     - name: Creates an entry in crontab
       ansible.builtin.cron:
