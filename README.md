@@ -46,6 +46,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   - Go get something to eat.
 
 ## Troubleshooting
+### Tested on Ubuntu 20.04
   * Sometimes the playbook can freeze while doing a task. usually a re-run of the script solves the issue.
   * If the playbook hangs on the database task it probably means you forgot to change the DB URL in your env file.
   * If you happen to copy the script, run it and get an interpreter error then just create a new script file and paste the contents.
