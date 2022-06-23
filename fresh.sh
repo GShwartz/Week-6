@@ -42,18 +42,20 @@ function get_input () {
 	read -s -p "Machines Password: " PASS
 	echo ""
 	
-	echo -n "env filename (Example: 'env-prod'): "
-	echo ""
-	read ENVFILEPATH
-	
-	if ! [ -f "$ENVFILEPATH" ]
+	# ENV filename
+	echo "env filename (Example: 'env-prod'): "
+	read ENVFILENAME
+		
+	if ! [ -f "$ENVFILENAME" ]
 	then
-		echo "No such file '$ENVFILEPATH'"
+		echo "No such file '$ENVFILENAME'"
 		echo "Type './fresh.sh help' for help"
 		exit 1
 	fi
 	
 	echo "$ENVFILEPATH: OK!"
+	
+	read -n "Number of nodes: " NODES
 	echo "GAME ON!!"
 }
 
@@ -121,8 +123,6 @@ function install_ansible_collection () {
 
 # Create Ansible Directory
 function create_dir () {
-	echo ""
-	echo ""
 	echo "========================================================================"
 	echo "Creating Directory"
 	echo "========================================================================"
@@ -159,6 +159,10 @@ function create_hosts () {
 
 # Move hosts file to /etc/ansible/hosts
 function move_hosts () {
+	echo "========================================================================"
+	echo "Moving hosts to /etc/ansible/hosts"
+	echo "========================================================================"
+	
 	sudo mv ~/hosts /etc/ansible/hosts
 }
 
@@ -167,21 +171,23 @@ function move_playbook () {
 	echo "========================================================================"
 	echo "Moving playbook.yml to /ansible"
 	echo "========================================================================"
+	
 	mv ~/playbook.yml ~/ansible/
 }
 
 # Configure Ansible to connect with Username & Password
 function define_login_method () {
 	# Define Login with User&Password
-	echo ""
-	echo ""
 	echo "========================================================================"
 	echo "Adding host key checking to /etc/ansible/ansible.cfg"
 	echo "========================================================================"
+	
 	sudo rm /etc/ansible/ansible.cfg
 	touch ~/ansible.cfg
 	sudo echo "[defaults]" >> ~/ansible.cfg
 	sudo echo "host_key_checking = false" >> ~/ansible.cfg
+	
+	# Overwrite the original /etc/ansible/ansible.cfg
 	sudo mv ~/ansible.cfg /etc/ansible/ansible.cfg
 }
 
@@ -189,25 +195,21 @@ function define_login_method () {
 function run_playbook () {
 	if [[ "$1" == "staging" ]]
 	then
-		echo ""
-		echo ""
 		echo "========================================================================"
 		echo "Running Staging playbook..."
 		echo "========================================================================"
 		
 		# Run Ansible playbook on Staging enviroment
-		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILEPATH"
+		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
 	
 	elif [ "$1" == "production" ]
 	then
-		echo ""
-		echo ""
 		echo "========================================================================"
 		echo "Running Production playbook..."
 		echo "========================================================================"
 		
 		# Run Ansible playbook on Production enviroment
-		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILEPATH"
+		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
 	
 	fi
 }
@@ -252,5 +254,11 @@ define_login_method
 
 # Run ansible playbook according to the environment.
 run_playbook "$1"
+
+# Removing the unsecured env file
+echo "========================================================================"
+echo "Removing unsecured files"
+echo "========================================================================"
+rm ~/"$ENVFILENAME"
 
 echo "FIN!"
