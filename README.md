@@ -10,6 +10,18 @@ So i've been tasked to get the Weight Tracker application up and running. <br />
   6. Install WebApp JS Package
   7. Initalize App's Database
   8. Reboot remote servers
+
+## Script Stages
+  1. Update & Upgrade OS packages
+  2. Install Ansible Package from apt repo
+  3. Upgrade Ansible Version
+  4. Install Ansible Community General Collection
+  5. Create Ansible directory (~/) (result: ~/ansible)
+  6. Create hosts file (~/hosts)
+  7. Update hosts file according to the environment set by the CLI command
+  8. Copy playbook file to ~/ansible
+  9. Add host key checking defaults in /etc/ansible/ansible.cfg
+  10. Run Ansible playbook according to the environment set by the CLI command
   
 ## Installation
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
