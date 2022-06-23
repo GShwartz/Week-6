@@ -1,4 +1,9 @@
-# Staging Env
+# Staging Environment
+## Installation
+  * Install Terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
+  * Install Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+  * Navigate to Environment directory
+  * Apply IAAC with terraform apply 
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
