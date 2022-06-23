@@ -14,7 +14,7 @@ There are two ways to get this job done: <br />
   - Create hosts file
   - Edit ansible.cfg to allow using of username&password
   - Copy relevant playbook to the controller
-  - Run playbook
+  - Run playbook (each file is in it's relevant directory)
 2.
   - Clone the repo
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
