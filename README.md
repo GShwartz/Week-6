@@ -1,6 +1,16 @@
 # Week 6 - Ansible
 So i've been tasked to get the Weight Tracker application up and running. <br />
 
+## Playbook tasks
+  1. Download NodeJS 14.X Source
+  2. Install NodeJS
+  3. Clone the Webapp repo from github
+  4. Copy ENV file to repo
+  5. Create an entry in crontab
+  6. Install WebApp JS Package
+  7. Initalize App's Database
+  8. Reboot remote servers
+  
 ## Installation
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
@@ -12,6 +22,9 @@ So i've been tasked to get the Weight Tracker application up and running. <br />
   - Run Script according to your environment, for example: ./fresh.sh staging <br />
   - Type in the username and ROOT password.
   - Go get something to eat.
+
+## Total files Copied to the Controller machine
+<img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
 
 ## Script Usage
   * The script accepts only 1 argument. (production | staging)
