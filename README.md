@@ -51,5 +51,8 @@ The script accepts only 1 argument. (production | staging)
 ### Example of Play Recap in a PRODUCTION environment when using the script <br />
 <img src="https://i.postimg.cc/d1YPBvwb/prod-andible-recap.jpg"> <br />
 
+### Crontab Entry
+<img src="https://i.postimg.cc/MGhSY2d1/crontab-entry.jpg"> <br />
+
 ### POC of the above
 <img src="https://i.postimg.cc/qqwyM8k1/poc.jpg"> <br />
