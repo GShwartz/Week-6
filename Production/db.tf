@@ -19,7 +19,7 @@ resource "azurerm_postgresql_flexible_server" "server" {
 
 # Create Database
 resource "azurerm_postgresql_flexible_server_database" "database" {
-  name      = "weightdb"
+  name      = "Database"
   server_id = azurerm_postgresql_flexible_server.server.id
   collation = "en_US.UTF8"
   charset   = "UTF8"

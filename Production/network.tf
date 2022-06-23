@@ -2,7 +2,7 @@
 resource "azurerm_virtual_network" "vnet" {
   address_space       = ["10.0.0.0/16"]
   location            = var.location
-  name                = "Weight_Tracker_Vnet"
+  name                = "Weight_Tracker-Vnet"
   resource_group_name = azurerm_resource_group.weight_prod.name
 
 }
@@ -41,7 +41,7 @@ resource "azurerm_subnet" "db_subnet" {
 # Create a Subnet for Linux Command VMs
 resource "azurerm_subnet" "linux_command_subnet" {
   address_prefixes     = ["10.0.10.0/28"] # 10.0.10.1 - 10.0.10.14
-  name                 = "Linux_Command"
+  name                 = "Controllers"
   resource_group_name  = azurerm_resource_group.weight_prod.name
   virtual_network_name = azurerm_virtual_network.vnet.name
 
@@ -63,7 +63,7 @@ resource "azurerm_public_ip" "load_balancer_pip" {
 resource "azurerm_public_ip" "linux_command_pip" {
   allocation_method   = "Dynamic"
   location            = var.location
-  name                = "Linux_${var.command_vm_name}-PiP"
+  name                = "${var.command_vm_name}-PiP"
   resource_group_name = azurerm_resource_group.weight_prod.name
 
   depends_on = [azurerm_resource_group.weight_prod]
@@ -80,7 +80,8 @@ resource "azurerm_network_interface" "nics" {
   ip_configuration {
     name                          = var.lb_backend_ap_ip_configuration_name
     subnet_id                     = azurerm_subnet.app_subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "10.0.1.${count.index + 4}"
 
   }
 
@@ -94,7 +95,7 @@ resource "azurerm_network_interface" "nics" {
 # Create NIC for Linux Command VM
 resource "azurerm_network_interface" "linux_command-nic" {
   location            = var.location
-  name                = "Linux_${var.command_vm_name}-NIC"
+  name                = "${var.command_vm_name}-NIC"
   resource_group_name = azurerm_resource_group.weight_prod.name
 
   ip_configuration {
@@ -115,7 +116,7 @@ resource "azurerm_network_interface" "linux_command-nic" {
 # Create Availability Set
 resource "azurerm_availability_set" "availability_set" {
   location                     = var.location
-  name                         = "App_Servers"
+  name                         = "Availability_Set"
   resource_group_name          = azurerm_resource_group.weight_prod.name
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
