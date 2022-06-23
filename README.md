@@ -16,6 +16,8 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   #### Validation
     1. Argument Validation - Checks any argument was entered to the command.
     2. Environment Validation - Check if the correct environment passed from the CLI command.
+    3. File Validation - Checks if the env file passed exists. 
+       (maybe you forgot to copy it? if that's the case, re-check your env settings before copying)
   
   #### Runtime
   1. Update & Upgrade OS packages
