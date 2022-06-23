@@ -42,7 +42,7 @@ So i've been tasked to get the Weight Tracker application up and running on mult
 <img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
 
 ## Script Usage
-* The script accepts only 1 argument. (production | staging)
+The script accepts only 1 argument. (production | staging)
 <img src="https://i.postimg.cc/dVwTCKcf/staging-script-usage.jpg"> <br />
 
 ### Example of Play Recap in a STAGING environment when using the script
