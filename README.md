@@ -35,6 +35,9 @@ So i've been tasked to get the Weight Tracker application up and running on mult
   - Type in the Machines Username, Machines Password and ROOT Password for the controller.
   - Go get something to eat.
 
+## Troubleshooting
+  * Sometimes the playbook can freeze while doing a task. usually a re-run of the script solves the issue.
+
 ## Total files Copied to the Controller machine
 <img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
 
