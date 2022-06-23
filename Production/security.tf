@@ -1,7 +1,7 @@
 # Create NSG for App-Servers
 resource "azurerm_network_security_group" "apps_nsg" {
   location            = var.location
-  name                = "App-Servers-NSG"
+  name                = "NSG-WebServers"
   resource_group_name = azurerm_resource_group.weight_prod.name
 
   # Allow SSH Access
@@ -53,7 +53,7 @@ resource "azurerm_network_security_group" "apps_nsg" {
 # Create NSG for Linux Command VMs
 resource "azurerm_network_security_group" "linux_command_nsg" {
   location            = var.location
-  name                = "Linux_CMD-NSG"
+  name                = "NSG-Controllers"
   resource_group_name = azurerm_resource_group.weight_prod.name
   depends_on          = [azurerm_virtual_network.vnet]
 
@@ -89,7 +89,7 @@ resource "azurerm_network_security_group" "linux_command_nsg" {
 # Create NSG for DB Servers
 resource "azurerm_network_security_group" "db_nsg" {
   location            = var.location
-  name                = "Databases-NSG"
+  name                = "NSG-Databases"
   resource_group_name = azurerm_resource_group.weight_prod.name
 
   # Allow DB Port Access
@@ -204,32 +204,3 @@ resource "azurerm_lb_outbound_rule" "outbound" {
   depends_on = [azurerm_lb.load_balancer]
 
 }
-
-# Create Azure Key Vault
-#resource "azurerm_key_vault" "vault" {
-#  location                   = var.location
-#  name                       = "WightTVault"
-#  resource_group_name        = azurerm_resource_group.weight_prod.name
-#  sku_name                   = "standard"
-#  tenant_id                  = data.azurerm_client_config.client_cfg.tenant_id
-#  soft_delete_retention_days = 7
-#  purge_protection_enabled   = false
-#  enable_rbac_authorization  = true
-#  access_policy {
-#    object_id = var.vault_object_id
-#    tenant_id = data.azurerm_client_config.client_cfg.tenant_id
-#
-#    key_permissions = [
-#      "Get", "Backup", "Create", "Import", "List", "Recover", "Restore", "Update", "Verify",
-#    ]
-#
-#    secret_permissions = [
-#      "Backup", "Delete", "Get", "List", "Recover", "Restore", "Set",
-#    ]
-#
-#    storage_permissions = [
-#      "Backup", "Delete", "Get", "List", "Recover", "RegenerateKey", "Restore", "Set", "Update",
-#    ]
-#
-#  }
-#}

@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine" "linux-command" {
 
 # Create Virtual Machines
 resource "azurerm_virtual_machine" "weight_tracker" {
-  count                 = 3
+  count                 = var.instances
   location              = var.location
   name                  = "WebServer_${count.index + 1}-VM"
   network_interface_ids = [element(azurerm_network_interface.nics.*.id, count.index)]
