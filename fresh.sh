@@ -53,9 +53,7 @@ function get_input () {
 		exit 1
 	fi
 	
-	echo "$ENVFILEPATH: OK!"
-	
-	read -n "Number of nodes: " NODES
+	echo "$ENVFILENAME: OK!"
 	echo "GAME ON!!"
 }
 
