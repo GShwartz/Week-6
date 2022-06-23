@@ -1,4 +1,7 @@
 # Production Environment
+## Virtual Network Topology
+<img src="https://i.postimg.cc/8znHcXJx/production-vnet-topology.jpg"> <br />
+
 ## Installation
   * Install Terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   * Install Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
@@ -70,12 +73,13 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_command_nic_ip_configuration_name"></a> [command\_nic\_ip\_configuration\_name](#input\_command\_nic\_ip\_configuration\_name) | Name of the NIC attached to Command VM | `string` | `"Command"` | no |
 | <a name="input_command_vm_admin_password"></a> [command\_vm\_admin\_password](#input\_command\_vm\_admin\_password) | Command Admin Password | `string` | `"SelaBootcamp4!"` | no |
-| <a name="input_command_vm_computer_name"></a> [command\_vm\_computer\_name](#input\_command\_vm\_computer\_name) | Name of the Computer inside the terminal VM | `string` | `"Command"` | no |
-| <a name="input_command_vm_name"></a> [command\_vm\_name](#input\_command\_vm\_name) | Name of the Terminal VM | `string` | `"CMD"` | no |
+| <a name="input_command_vm_computer_name"></a> [command\_vm\_computer\_name](#input\_command\_vm\_computer\_name) | Name of the Computer inside the terminal VM | `string` | `"controller"` | no |
+| <a name="input_command_vm_name"></a> [command\_vm\_name](#input\_command\_vm\_name) | Name of the Terminal VM | `string` | `"Controller"` | no |
 | <a name="input_db_dns_zone_name"></a> [db\_dns\_zone\_name](#input\_db\_dns\_zone\_name) | DNS Name for Flexible server | `string` | `"weightdb"` | no |
 | <a name="input_db_password"></a> [db\_password](#input\_db\_password) | Database Password | `string` | `"p@ssw0rd42"` | no |
 | <a name="input_db_user"></a> [db\_user](#input\_db\_user) | Database User | `string` | `"postgres"` | no |
-| <a name="input_lb_backend_ap_ip_configuration_name"></a> [lb\_backend\_ap\_ip\_configuration\_name](#input\_lb\_backend\_ap\_ip\_configuration\_name) | Name the NIC to be shown under the load balancer backend address pool | `string` | `"AppServer-NIC"` | no |
+| <a name="input_instances"></a> [instances](#input\_instances) | Number of VM Instances | `number` | `3` | no |
+| <a name="input_lb_backend_ap_ip_configuration_name"></a> [lb\_backend\_ap\_ip\_configuration\_name](#input\_lb\_backend\_ap\_ip\_configuration\_name) | Name the NIC to be shown under the load balancer backend address pool | `string` | `"WebServer-NIC"` | no |
 | <a name="input_linux_sku"></a> [linux\_sku](#input\_linux\_sku) | Distribution | `string` | `"20_04-lts-gen2"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Set Location | `string` | `"East US"` | no |
 | <a name="input_managed_disk_type"></a> [managed\_disk\_type](#input\_managed\_disk\_type) | Managed Disk Type | `string` | `"Standard_LRS"` | no |
@@ -83,7 +87,6 @@ No modules.
 | <a name="input_os_version"></a> [os\_version](#input\_os\_version) | Version | `string` | `"latest"` | no |
 | <a name="input_publisher"></a> [publisher](#input\_publisher) | OS Publisher | `string` | `"Canonical"` | no |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | Resource Group Name | `string` | `"Production"` | no |
-| <a name="input_vault_object_id"></a> [vault\_object\_id](#input\_vault\_object\_id) | Object ID for Key Vault | `string` | `"1cd9518e-559e-43c6-a82b-8b5e06e59e71"` | no |
 | <a name="input_virtual_network_name"></a> [virtual\_network\_name](#input\_virtual\_network\_name) | Name for the Virtual Network | `string` | `"WeightTracker-Vnet"` | no |
 | <a name="input_vm_disk_name"></a> [vm\_disk\_name](#input\_vm\_disk\_name) | Disk Name | `string` | `"Disk"` | no |
 | <a name="input_webapp_create_option"></a> [webapp\_create\_option](#input\_webapp\_create\_option) | Create Option | `string` | `"FromImage"` | no |
@@ -93,14 +96,8 @@ No modules.
 | <a name="input_webapp_vm_admin_password"></a> [webapp\_vm\_admin\_password](#input\_webapp\_vm\_admin\_password) | VM Admin Password | `string` | `"SelaBootcamp4!"` | no |
 | <a name="input_webapp_vm_admin_user"></a> [webapp\_vm\_admin\_user](#input\_webapp\_vm\_admin\_user) | VM Admin User | `string` | `"gstudent"` | no |
 | <a name="input_webapp_vm_computer_name"></a> [webapp\_vm\_computer\_name](#input\_webapp\_vm\_computer\_name) | Name of the Computer inside the webapp VM | `string` | `"webapp"` | no |
-| <a name="input_webapp_vm_name"></a> [webapp\_vm\_name](#input\_webapp\_vm\_name) | Name of the WebApp Virtual Machine | `string` | `"WeightTrackerVM"` | no |
 | <a name="input_webapp_vm_type_b1ms"></a> [webapp\_vm\_type\_b1ms](#input\_webapp\_vm\_type\_b1ms) | VM Type (Usually Standard\_B1s) | `string` | `"Standard_B1ms"` | no |
 | <a name="input_webapp_vm_type_b1s"></a> [webapp\_vm\_type\_b1s](#input\_webapp\_vm\_type\_b1s) | VM Type (Usually Standard\_B1s) | `string` | `"Standard_B1s"` | no |
-| <a name="input_win_server_offer"></a> [win\_server\_offer](#input\_win\_server\_offer) | n/a | `string` | `"WindowsServer"` | no |
-| <a name="input_win_server_os_version"></a> [win\_server\_os\_version](#input\_win\_server\_os\_version) | n/a | `string` | `"latest"` | no |
-| <a name="input_win_server_publisher"></a> [win\_server\_publisher](#input\_win\_server\_publisher) | ==================================================== # Platforms                       # ==================================================== # Windows Server 2022 SKU used to build VMs Windows Server Source Image Preferences | `string` | `"MicrosoftWindowsServer"` | no |
-| <a name="input_windows_2019_sku"></a> [windows\_2019\_sku](#input\_windows\_2019\_sku) | Windows Server 2019 SKU used to build VMs | `string` | `"2019-Datacenter"` | no |
-| <a name="input_windows_2022_sku"></a> [windows\_2022\_sku](#input\_windows\_2022\_sku) | Windows Server 2022 SKU used to build VMs | `string` | `"2019-Datacenter"` | no |
 
 ## Outputs
 
