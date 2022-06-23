@@ -2,21 +2,7 @@
 So i've been tasked to get the Weight Tracker application up and running. <br />
 There are two ways to get this job done: <br />
 1.
-  - Install Terraform and all it's dependencies along with Azure CLI
-  - Clone the Repo
-  - Navigate to your desired environment directory
-  - Run terraform apply
-  - Change IP address details in OKTA and .env file according to the details you get from the IAAS
-  - Login to the controller
-  - Update & Upgrade OS
-  - Install Ansible and all it's dependencies
-  - Upgrade Ansible
-  - Create hosts file
-  - Edit ansible.cfg to allow using of username&password
-  - Copy relevant playbook to the controller
-  - Run playbook (each file is in it's relevant directory)
-2.
-  - Apply the IAAC using terraform
+  - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Clone the repo
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Edit IP address in the env file and change its name to env-prod or env-stage (depending on the environment)
