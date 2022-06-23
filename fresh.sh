@@ -254,9 +254,9 @@ define_login_method
 run_playbook "$1"
 
 # Removing the unsecured env file
-echo "========================================================================"
+echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 echo "Removing unsecured files"
-echo "========================================================================"
+echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 rm ~/"$ENVFILENAME"
 
 echo "$(tput setaf 1)FIN!$(tput setaf 7)"
