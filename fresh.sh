@@ -48,13 +48,13 @@ function get_input () {
 		
 	if ! [ -f "$ENVFILENAME" ]
 	then
-		echo "No such file '$ENVFILENAME'"
+		echo "$(tput setaf 1)No such file '$ENVFILENAME'$(tput setaf 7)"
 		echo "Type './fresh.sh help' for help"
 		exit 1
 	fi
 	
-	echo "$ENVFILENAME: OK!"
-	echo "GAME ON!!"
+	echo "$(tput setaf 2)Filename: OK! $(tput setaf 7)"
+	echo "$(tput setaf 5)GAME ON!! $(tput setaf 7)"
 }
 
 # Validate Environment User Input
@@ -70,7 +70,7 @@ function input_validation () {
 		get_input
 	
 	else
-		echo "wrong environment. use production or staging."
+		echo "$(tput setaf 1)wrong environment. $(tput setaf 7)"
 		echo "Type './fresh.sh help' for help"		
 		exit 1
 
@@ -81,9 +81,9 @@ function input_validation () {
 function update_upgrade () {
 	echo ""
 	echo ""
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Installing OS Updates & Upgrades"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo $ROOT | sudo -S apt update && sudo apt upgrade -y;
 }
 
@@ -91,9 +91,9 @@ function update_upgrade () {
 function ans_install () {
 	echo ""
 	echo ""
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Installing Ansible"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo $ROOT | sudo apt install ansible -y
 }
 
@@ -101,9 +101,9 @@ function ans_install () {
 function upgrade_ansible () {
 	echo ""
 	echo ""
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Upgrading Ansible"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo $ROOT | sudo apt-add-repository ppa:ansible/ansible
 	echo $ROOT | sudo apt update
 	echo $ROOT | sudo -S apt upgrade -y
@@ -113,25 +113,25 @@ function upgrade_ansible () {
 function install_ansible_collection () {
 	echo ""
 	echo ""
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Installing Andible Community General Collection"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	ansible-galaxy collection install community.general
 }
 
 # Create Ansible Directory
 function create_dir () {
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Creating Directory"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	mkdir -p ~/ansible/
 }
 
 # Create hosts file under ~/
 function create_hosts () {
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Creating hosts file in /etc/ansible/hosts "
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	touch ~/hosts
 	echo "[webservers]" >> ~/hosts
 	
@@ -157,18 +157,18 @@ function create_hosts () {
 
 # Move hosts file to /etc/ansible/hosts
 function move_hosts () {
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Moving hosts to /etc/ansible/hosts"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	
 	sudo mv ~/hosts /etc/ansible/hosts
 }
 
 # Move Playbook to ~/ansible
 function move_playbook () {
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Moving playbook.yml to /ansible"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	
 	mv ~/playbook.yml ~/ansible/
 }
@@ -176,9 +176,9 @@ function move_playbook () {
 # Configure Ansible to connect with Username & Password
 function define_login_method () {
 	# Define Login with User&Password
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Adding host key checking to /etc/ansible/ansible.cfg"
-	echo "========================================================================"
+	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	
 	sudo rm /etc/ansible/ansible.cfg
 	touch ~/ansible.cfg
@@ -193,18 +193,18 @@ function define_login_method () {
 function run_playbook () {
 	if [[ "$1" == "staging" ]]
 	then
-		echo "========================================================================"
+		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 		echo "Running Staging playbook..."
-		echo "========================================================================"
+		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 		
 		# Run Ansible playbook on Staging enviroment
 		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
 	
 	elif [ "$1" == "production" ]
 	then
-		echo "========================================================================"
+		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 		echo "Running Production playbook..."
-		echo "========================================================================"
+		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 		
 		# Run Ansible playbook on Production enviroment
 		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
@@ -259,4 +259,4 @@ echo "Removing unsecured files"
 echo "========================================================================"
 rm ~/"$ENVFILENAME"
 
-echo "FIN!"
+echo "$(tput setaf 1)FIN!$(tput setaf 7)"
