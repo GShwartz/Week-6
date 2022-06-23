@@ -1,20 +1,91 @@
+#!/bin/bash
+
 <<comment
- An Automated script for the ansible controller & playbook running.
+ An Automated script for the ansible controller machine & Ansible playbook run.
+ By Gil Shwartz @2022
  
  Stages:
 	1. Update OS packages
 	2. Installing Ansible's original package
 	3. Upgrading Ansible
-	4. Installing Andible Community General Collection
+	4. Installing Ansible Community General Collection
 	5. Create ansible directory in ~
 	6. Create hosts file under ~/hosts
 	7. Copy playbook file according to the environment in $1
 	8. Add host key checking defaults in under /etc/ansible/ansible.cfg
-	9. Run ansible playbook according to the environment in $ENVI
+	9. Run ansible playbook according to the environment in $1
 
 comment
-PRODFILE=~/playbook-prod.yml
-STAGEFILE=~/playbook-stage.yml
+
+# Show Help Information
+function get_help () {
+	echo "Choose between staging and production environments."
+	echo "Make sure the env file is NOT HIDDEN (no . in the filename)."
+	echo ""
+	echo "Example: ./fresh.sh staging | ./fresh.sh production"
+	echo "env file path Example: ~/env-staging | ~/env"
+	echo ""
+	
+	exit 0
+}
+
+function get_input () {
+	# Cluster VMs Username
+	echo "Username:"
+	read USER
+	
+	# Controller Root Password
+	read -s -p "Controller root password: " ROOT
+	echo ""
+	
+	# Cluster VNs Password
+	read -s -p "Machines Password: " PASS
+	echo ""
+	
+	echo -n "env filename (Example: 'env-prod'): "
+	echo ""
+	read ENVFILEPATH
+	
+	if ! [ -f "$ENVFILEPATH" ]
+	then
+		echo "No such file '$ENVFILEPATH'"
+		echo "Type './fresh.sh help' for help"
+		exit 1
+	fi
+	
+	echo "$ENVFILEPATH: OK!"
+	echo "GAME ON!!"
+}
+
+# Validate Environment User Input
+function input_validation () {	
+	# Input validation for environment
+	if [ "$1" == "production" ]
+	then
+		get_input	
+	
+	
+	elif [ "$1" == "staging" ]
+	then
+		get_input
+	
+	else
+		echo "wrong environment. use production or staging."
+		echo "Type './fresh.sh help' for help"		
+		exit 1
+
+	fi
+}
+
+# Update & Upgrade
+function update_upgrade () {
+	echo ""
+	echo ""
+	echo "========================================================================"
+	echo "Installing OS Updates & Upgrades"
+	echo "========================================================================"
+	echo $ROOT | sudo -S apt update && sudo apt upgrade -y;
+}
 
 # Install Ansible
 function ans_install () {
@@ -23,54 +94,120 @@ function ans_install () {
 	echo "========================================================================"
 	echo "Installing Ansible"
 	echo "========================================================================"
-	echo $PASS | sudo apt install ansible -y;
+	echo $ROOT | sudo apt install ansible -y
+}
 
-	# Upgrade Ansible Version
+# Upgrade Ansible version, Update & Upgrade packages
+function upgrade_ansible () {
 	echo ""
 	echo ""
 	echo "========================================================================"
 	echo "Upgrading Ansible"
 	echo "========================================================================"
-	echo $PASS | sudo apt-add-repository ppa:ansible/ansible
-	echo $PASS | sudo apt update
-	echo $PASS | sudo -S apt upgrade -y
+	echo $ROOT | sudo apt-add-repository ppa:ansible/ansible
+	echo $ROOT | sudo apt update
+	echo $ROOT | sudo -S apt upgrade -y
+}
 
-	# Install Ansible Community Modules
+# Install Ansible Community Modules
+function install_ansible_collection () {
 	echo ""
 	echo ""
 	echo "========================================================================"
 	echo "Installing Andible Community General Collection"
 	echo "========================================================================"
 	ansible-galaxy collection install community.general
+}
 
-	# Create Ansible Directory
+# Create Ansible Directory
+function create_dir () {
 	echo ""
 	echo ""
 	echo "========================================================================"
 	echo "Creating Directory"
 	echo "========================================================================"
-	mkdir -p /home/gstudent/ansible;
-
+	mkdir -p ~/ansible/
 }
 
-# Run Ansible Playbook
-function play () {
+# Create hosts file under ~/
+function create_hosts () {
+	echo "========================================================================"
+	echo "Creating hosts file in /etc/ansible/hosts "
+	echo "========================================================================"
+	touch ~/hosts
+	echo "[webservers]" >> ~/hosts
+	
+	if [[ "$1" == "production" ]]
+	then
+		# Assign IP and prefrences to each host in Staging ENV
+		for i in {4..6}
+		do
+			sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
+
+		done
+	
+	else
+		# Assign IP and prefrences to each host in Staging ENV
+		for i in 4 5
+		do
+			sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
+
+		done
+
+	fi
+}
+
+# Move hosts file to /etc/ansible/hosts
+function move_hosts () {
+	sudo mv ~/hosts /etc/ansible/hosts
+}
+
+# Move Playbook to ~/ansible
+function move_playbook () {
+	echo "========================================================================"
+	echo "Moving playbook.yml to /ansible"
+	echo "========================================================================"
+	mv ~/playbook.yml ~/ansible/
+}
+
+# Configure Ansible to connect with Username & Password
+function define_login_method () {
+	# Define Login with User&Password
+	echo ""
+	echo ""
+	echo "========================================================================"
+	echo "Adding host key checking to /etc/ansible/ansible.cfg"
+	echo "========================================================================"
+	sudo rm /etc/ansible/ansible.cfg
+	touch ~/ansible.cfg
+	sudo echo "[defaults]" >> ~/ansible.cfg
+	sudo echo "host_key_checking = false" >> ~/ansible.cfg
+	sudo mv ~/ansible.cfg /etc/ansible/ansible.cfg
+}
+
+# Run ~/ansible/playbook.yml
+function run_playbook () {
 	if [[ "$1" == "staging" ]]
 	then
 		echo ""
 		echo ""
 		echo "========================================================================"
-		echo "Running playbook-stage..."
+		echo "Running Staging playbook..."
 		echo "========================================================================"
-		cd ~/ansible/ && ansible-playbook playbook-stage.yml
+		
+		# Run Ansible playbook on Staging enviroment
+		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILEPATH"
 	
-	else
+	elif [ "$1" == "production" ]
+	then
 		echo ""
 		echo ""
 		echo "========================================================================"
-		echo "Running playbook-production..."
+		echo "Running Production playbook..."
 		echo "========================================================================"
-		cd ~/ansible/ && ansible-playbook playbook-prod.yml
+		
+		# Run Ansible playbook on Production enviroment
+		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILEPATH"
 	
 	fi
 }
@@ -78,96 +215,42 @@ function play () {
 # If the argument is empty then it means no environment passed- script ends with exit code 1.
 if [[ "$1" == "help" ]]
 then
-	echo "Choose between staging and production environments"
-	echo ""
-	echo "Example: ./fresh.sh staging | ./fresh.sh production"
-	echo ""
+	# Show help information if asked to
+	get_help
 
 fi
 
-# Check if argument is empty
-if [[ -z "$1" ]]
-then
-	echo "No environment chosen"
-	exit 1
-fi
+# Validate Environment user input
+input_validation "$1"
 
-# Input validation for environment
-if [[ "$1" == "production" ]] || [[ "$1" == "staging" ]]
-then
-	ENVI="$1"
-	echo "Username:"
-	read USER
-	read -s -p "Root password: " PASS
-
-else
-	echo "wrong environment. use production or staging."
-	exit 1
-
-fi
-
-# Update & Upgrade the Machine
-echo ""
-echo ""
-echo "========================================================================"
-echo "Installing OS Updates"
-echo "========================================================================"
-echo $PASS | sudo -S apt update && sudo apt upgrade -y;
+# Update & Upgrade the Controller OS
+update_upgrade
 
 # Installing Ansible
 ans_install
 
+# Upgrade Ansible
+upgrade_ansible
+
+# Install Ansible Community General Collection
+install_ansible_collection
+
+# Create Ansible Directory
+create_dir
+
 # Create hosts file
-echo "========================================================================"
-echo "Creating hosts file in /etc/ansible/hosts "
-echo "========================================================================"
-touch ~/hosts
-echo "[webservers]" >> ~/hosts
+create_hosts "$1"
 
-if [[ "$1" == "production" ]]
-then
-	for i in {4..6}
-	do
-		sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
+# Move hosts file to /etc/ansible/hosts
+move_hosts
 
-	done
-	sudo mv ~/hosts /etc/ansible/hosts
-	
-	# Move playbook-prod.yml to ~/ansible
-	echo "========================================================================"
-	echo "Moving playbook-prod.yml to /ansible"
-	echo "========================================================================"
-	mv ~/playbook-prod.yml ~/ansible/
+# Move playbook.yml to ~/ansible
+move_playbook
 
-else
-	for i in 4 5
-	do
-		sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
+# Define Login Method
+define_login_method
 
-	done
-	sudo mv ~/hosts /etc/ansible/hosts
-	
-	# Move playbook-stage to ~/ansible
-	echo "========================================================================"
-	echo "Moving playbook-stage.yml to /ansible"
-	echo "========================================================================"
-	mv ~/playbook-stage.yml ~/ansible/
-
-fi
-
-# Define Login with User&Password
-echo ""
-echo ""
-echo "========================================================================"
-echo "Adding host key checking to /etc/ansible/ansible.cfg"
-echo "========================================================================"
-sudo rm /etc/ansible/ansible.cfg
-touch ~/ansible.cfg
-sudo echo "[defaults]" >> ~/ansible.cfg
-sudo echo "host_key_checking = false" >> ~/ansible.cfg
-sudo mv ~/ansible.cfg /etc/ansible/ansible.cfg
-	
 # Run ansible playbook according to the environment.
-play "$ENVI"
+run_playbook "$1"
 
 echo "FIN!"
