@@ -1,6 +1,6 @@
 # Create a Flexible PostgreSQL Server
 resource "azurerm_postgresql_flexible_server" "server" {
-  resource_group_name    = azurerm_resource_group.weight_tracker_rg.name
+  resource_group_name    = azurerm_resource_group.staging_rg.name
   delegated_subnet_id    = azurerm_subnet.db_subnet.id
   location               = var.location
   name                   = "weightdb"
@@ -11,7 +11,7 @@ resource "azurerm_postgresql_flexible_server" "server" {
   sku_name               = "GP_Standard_D2s_v3"
   backup_retention_days  = 7
   private_dns_zone_id    = azurerm_private_dns_zone.dbdns.id
-  zone = "1"
+  zone                   = "1"
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.zone_link]
 

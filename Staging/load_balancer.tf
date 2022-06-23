@@ -2,7 +2,7 @@
 resource "azurerm_lb" "load_balancer" {
   location            = var.location
   name                = "Load_Balancer"
-  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
+  resource_group_name = azurerm_resource_group.staging_rg.name
 
   frontend_ip_configuration {
     name                 = "PublicIPAddress"

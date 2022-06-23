@@ -1,8 +1,8 @@
 # Create NSG for App-Servers
 resource "azurerm_network_security_group" "apps_nsg" {
   location            = var.location
-  name                = "App-Servers-NSG"
-  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
+  name                = "NSG-WebServers"
+  resource_group_name = azurerm_resource_group.staging_rg.name
 
   # Allow SSH Access
   security_rule {
@@ -53,8 +53,8 @@ resource "azurerm_network_security_group" "apps_nsg" {
 # Create NSG for Linux Command VMs
 resource "azurerm_network_security_group" "linux_command_nsg" {
   location            = var.location
-  name                = "Linux_CMD-NSG"
-  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
+  name                = "NSG-Controllers"
+  resource_group_name = azurerm_resource_group.staging_rg.name
   depends_on          = [azurerm_virtual_network.vnet]
 
   # Allow SSH Access
@@ -89,8 +89,8 @@ resource "azurerm_network_security_group" "linux_command_nsg" {
 # Create NSG for DB Servers
 resource "azurerm_network_security_group" "db_nsg" {
   location            = var.location
-  name                = "Databases-NSG"
-  resource_group_name = azurerm_resource_group.weight_tracker_rg.name
+  name                = "NSG-Databases"
+  resource_group_name = azurerm_resource_group.staging_rg.name
 
   # Allow DB Port Access
   security_rule {
@@ -180,7 +180,7 @@ resource "azurerm_lb_rule" "web" {
 # Create a Load Balancer NAT Rule
 resource "azurerm_lb_nat_rule" "nat_rule_ssh" {
   name                           = "SSH"
-  resource_group_name            = azurerm_resource_group.weight_tracker_rg.name
+  resource_group_name            = azurerm_resource_group.staging_rg.name
   backend_port                   = 22
   frontend_ip_configuration_name = "PublicIPAddress"
   frontend_port                  = 22
