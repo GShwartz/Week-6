@@ -66,7 +66,7 @@ resource "azurerm_network_security_group" "linux_command_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = 22
-    source_address_prefix      = "*"
+    source_address_prefix      = "5.40.19.150"
     destination_address_prefix = "10.0.10.0/29"
   }
 
