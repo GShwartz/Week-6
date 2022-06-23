@@ -44,6 +44,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   - Type in the Machines Username, Machines Password and ROOT Password for the controller.
   - **MAKE SURE THE ENV FILE DOESN'T HAVE THE . ATTRIBUTE** (Example: .env)
   - Go get something to eat.
+  - When finished, open a web browser and navigate to http://IP:8080
 
 ## Troubleshooting
 ### Tested on Ubuntu 20.04
