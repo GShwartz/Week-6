@@ -1,9 +1,9 @@
 # Week 6 - Ansible
 So i've been tasked to get the Weight Tracker application up and running. <br />
-There are two ways to get this job done: <br />
-1.
+
+## Installation
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
-  - Clone the repo
+  - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Edit IP address in the env file and change its name to env-prod or env-stage (depending on the environment)
   - Copy the changed env file to ~ on the controller
@@ -23,4 +23,5 @@ There are two ways to get this job done: <br />
 ### Example of Play Recap in a PRODUCTION environment when using the script <br />
 <img src="https://i.postimg.cc/d1YPBvwb/prod-andible-recap.jpg"> <br />
 
-
+### POC of the above
+<img src="https://i.postimg.cc/qqwyM8k1/poc.jpg"> <br />
