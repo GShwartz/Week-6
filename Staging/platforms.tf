@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine" "linux-command" {
 
 # Create Virtual Machines
 resource "azurerm_virtual_machine" "webapp" {
-  count                 = var.counter
+  count                 = var.instances
   location              = var.location
   name                  = "WebServer-${count.index + 1}"
   network_interface_ids = [element(azurerm_network_interface.nics.*.id, count.index)]
