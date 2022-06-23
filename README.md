@@ -33,6 +33,7 @@ So i've been tasked to get the Weight Tracker application up and running on mult
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
+  - Edit the DB & OKTA URLS in your env file
   - Copy the changed env file to ~ on the controller
   - Copy script to ~ on the controller
   - Change script permissions using chmod +x fresh.sh
@@ -43,6 +44,7 @@ So i've been tasked to get the Weight Tracker application up and running on mult
 
 ## Troubleshooting
   * Sometimes the playbook can freeze while doing a task. usually a re-run of the script solves the issue.
+  * If the playbook hangs on the database task it probably means you forgot to change the DB URL in your env file.
 
 ## Total files Copied to the Controller machine
 <img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
