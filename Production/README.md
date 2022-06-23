@@ -1,4 +1,4 @@
-# Pרםגובאןםמ Environment
+# Production Environment
 ## Installation
   * Install Terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   * Install Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
