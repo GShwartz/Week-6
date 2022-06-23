@@ -1,5 +1,6 @@
 # Week 6 - Ansible
-So i've been tasked to get the Weight Tracker application up and running on multiple environments with multiple machines... <br />
+So i've been tasked to get the Weight Tracker application up and running on multiple environments with multiple machines. <br />
+In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_AMRAAM), nothing beats a Fire-And-Forget approach.
 
 ## Playbook tasks
   1. Download NodeJS 14.X Source
@@ -45,6 +46,8 @@ So i've been tasked to get the Weight Tracker application up and running on mult
 ## Troubleshooting
   * Sometimes the playbook can freeze while doing a task. usually a re-run of the script solves the issue.
   * If the playbook hangs on the database task it probably means you forgot to change the DB URL in your env file.
+  * If you happen to copy the script, run it and get an interpreter error then just create a new script file and paste the contents.
+    - make sure you give the new script file execution permissions. (chmod +x ./fresh.sh)
 
 ## Total files Copied to the Controller machine
 <img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
