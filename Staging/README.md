@@ -2,6 +2,8 @@
 ## Installation
   * Install Terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   * Install Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+  * Run Powershell & login to your Azure account with az login (a web browser will open to sign you in)
+  * (Optional) Apply new alias to terraform by typing New-Alias -Name "tf" -Value "terraform"
   * Navigate to Environment directory
   * Apply IAAC with terraform apply 
 
