@@ -55,7 +55,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
 <img src="https://i.postimg.cc/43LcYjSV/total-files-in-controller.jpg"> <br />
 
 ## Total files when the script ends
-<img src="https://i.postimg.cc/MG7JYwmC/post-script.jpg"> <br />
+<img src="https://i.postimg.cc/MGSG7qQB/post-script.jpg"> <br />
 
 ## Script Usage
 The script accepts only 1 argument. (production | staging)
