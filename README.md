@@ -31,9 +31,9 @@ So i've been tasked to get the Weight Tracker application up and running on mult
 ## Installation
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
-  - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
   - Edit the DB & OKTA URLS in your env file
+  - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Copy the changed env file to ~ on the controller
   - Copy script to ~ on the controller
   - Change script permissions using chmod +x fresh.sh
