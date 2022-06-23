@@ -1,5 +1,5 @@
 # Week 6 - Ansible
-So i've been tasked to get the Weight Tracker application up and running. <br />
+So i've been tasked to get the Weight Tracker application up and running on multiple environments with multiple machines... <br />
 
 ## Playbook tasks
   1. Download NodeJS 14.X Source
@@ -27,12 +27,12 @@ So i've been tasked to get the Weight Tracker application up and running. <br />
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
-  - Edit IP address in the env file and change its name to env-prod or env-stage (depending on the environment)
+  - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
   - Copy the changed env file to ~ on the controller
-  - Copy script to the controller
+  - Copy script to ~ on the controller
   - Change script permissions using chmod +x fresh.sh
   - Run Script according to your environment, for example: ./fresh.sh staging <br />
-  - Type in the username and ROOT password.
+  - Type in the Machines Username, Machines Password and ROOT Password for the controller.
   - Go get something to eat.
 
 ## Total files Copied to the Controller machine
