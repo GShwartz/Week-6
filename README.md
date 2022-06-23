@@ -5,13 +5,18 @@ So i've been tasked to get the Weight Tracker application up and running on mult
   1. Download NodeJS 14.X Source
   2. Install NodeJS
   3. Clone the Webapp repo from github
-  4. Copy ENV file to repo
+  4. Copy ENV file to WebApp's repo with a **hidden attribute** (.env)
   5. Create an entry in crontab
   6. Install WebApp JS Package
   7. Initalize App's Database
   8. Reboot remote servers
 
 ## Script Stages
+  #### Validation
+    1. Argument Validation - Checks any argument was entered to the command.
+    2. Environment Validation - Check if the correct environment passed from the CLI command.
+  
+  #### Runtime
   1. Update & Upgrade OS packages
   2. Install Ansible Package from apt repo
   3. Upgrade Ansible Version
@@ -33,6 +38,7 @@ So i've been tasked to get the Weight Tracker application up and running on mult
   - Change script permissions using chmod +x fresh.sh
   - Run Script according to your environment, for example: ./fresh.sh staging <br />
   - Type in the Machines Username, Machines Password and ROOT Password for the controller.
+  - **MAKE SURE THE ENV FILE DOESN'T HAVE THE . ATTRIBUTE** (Example: .env)
   - Go get something to eat.
 
 ## Troubleshooting
