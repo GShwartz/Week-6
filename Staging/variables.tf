@@ -37,36 +37,12 @@ variable "lb_backend_ap_ip_configuration_name" {
 # ==================================================== #
 #                      Platforms                       #
 # ==================================================== #
-# Windows Server 2022 SKU used to build VMs
-# Windows Server Source Image Preferences
-variable "win_server_publisher" {
-  type    = string
-
-}
-
-variable "win_server_offer" {
-  type    = string
-
-}
-
-variable "windows_2022_sku" {
-  type        = string
-  description = "Windows Server 2022 SKU used to build VMs"
-
-}
-
-variable "win_server_os_version" {
-  type    = string
-
-}
-
-# Windows Server 2019 SKU used to build VMs
-variable "windows_2019_sku" {
-  type        = string
-  description = "Windows Server 2019 SKU used to build VMs"
-}
-
 ##### Linux OS Profile #####
+variable "instances" {
+  destciption = "Number of Instances"
+  
+}
+
 variable "publisher" {
   description = "OS Publisher"
 
@@ -148,7 +124,7 @@ variable "webapp_vm_computer_name" {
 
 }
 
-##### Terminal VM Platform #####
+##### Controller VM Platform #####
 variable "command_vm_computer_name" {
   description = "Name of the Computer inside the terminal VM"
 
@@ -174,8 +150,4 @@ variable "db_password" {
 
 }
 
-variable "vault_object_id" {
-  description = "Object ID for Key Vault"
-
-}
 
