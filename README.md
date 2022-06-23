@@ -32,6 +32,8 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   10. Run Ansible playbook according to the environment set by the CLI command
   
 ## Installation
+  - Clone this Repo and Navigate to the environment
+  - Make sure you're on the right **workspace**
   - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
   - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
