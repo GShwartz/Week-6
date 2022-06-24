@@ -137,7 +137,7 @@ function create_hosts () {
 	
 	if [[ "$1" == "production" ]]
 	then
-		# Assign IP and prefrences to each host in Staging ENV
+		# Assign IP and prefrences to each host in Production ENV
 		for i in {4..6}
 		do
 			sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
