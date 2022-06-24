@@ -35,16 +35,15 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   - Clone this Repo and Navigate to the environment
   - Make sure you're on the right **workspace**
   - Apply the IAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
-  - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
+  - Edit IP address and other relevant details in the env file (depending on the environment)
   - Edit the DB & OKTA URLS in your env file
   - Add the Load Balancer IP Address to OKTA Application re-directs (https://developer.okta.com/)
   - Copy env and playbook files to the ~ dir in the controller.
-  - Copy the changed env file to ~ on the controller
   - Copy script to ~ on the controller
   - Change script permissions using chmod +x fresh.sh
   - Run Script according to your environment, for example: ./fresh.sh staging <br />
   - Type in the Machines Username, Machines Password and ROOT Password for the controller.
-  - **MAKE SURE THE ENV FILE DOESN'T HAVE THE . ATTRIBUTE** (Example: .env)
+  - **MAKE SURE THE ENV FILE DOESN'T HAVE THE . ATTRIBUTE** (Example: 'env' instead of '.env')
   - Go get something to eat.
   - When finished, open a web browser and navigate to http://IP:8080
 
