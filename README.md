@@ -34,7 +34,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
 ## Installation
   - Clone this Repo and Navigate to the environment
   - Make sure you're on the right **workspace**
-  - Apply the IAAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
+  - Apply the IAC using terraform (https://learn.hashicorp.com/tutorials/terraform/install-cli)
   - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
   - Edit the DB & OKTA URLS in your env file
   - Add the Load Balancer IP Address to OKTA Application re-directs (https://developer.okta.com/)
