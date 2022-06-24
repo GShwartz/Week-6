@@ -4,9 +4,9 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
 
 ## Script Stages
   #### Validation Stage
-    1. Argument Validation - Checks any argument was entered to the command.
-    2. Environment Validation - Check if the correct environment passed from the CLI command.
-    3. File Validation - Checks if the env file passed exists. 
+    1. Argument Validation - Checks if any argument was entered to the command.
+    2. Environment Validation - Checks if the correct environment passed from the CLI command.
+    3. File Validation - Checks if the env file passed from the CLI exists. 
        (maybe you forgot to copy it? if that's the case, re-check your env settings before copying)
   
   #### Runtime Stage
