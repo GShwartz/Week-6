@@ -1,6 +1,6 @@
 # Week 6 - Ansible
 So i've been tasked to get the Weight Tracker application up and running on multiple environments with multiple machines. <br />
-In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_AMRAAM), nothing beats a Fire-And-Forget approach.
+In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_AMRAAM), nothing beats the Fire-And-Forget approach.
 
 ## Playbook tasks
   1. Download NodeJS 14.X Source
