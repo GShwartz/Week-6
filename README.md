@@ -41,7 +41,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   - Copy env and playbook files to the ~ dir in the controller.
   - Copy script to ~ on the controller
   - Change script permissions using chmod +x fresh.sh
-  - Run Script according to your environment, for example: ./fresh.sh staging <br />
+  - Run Script according to your environment, for example: sudo ./fresh.sh staging <br />
   - Type in the Machines Username, Machines Password and ROOT Password for the controller.
   - **MAKE SURE THE ENV FILE DOESN'T HAVE THE . ATTRIBUTE** (Example: 'env' instead of '.env')
   - Go get something to eat.
