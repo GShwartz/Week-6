@@ -2,16 +2,6 @@
 So i've been tasked to get the Weight Tracker application up and running on multiple environments with multiple machines. <br />
 In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_AMRAAM), nothing beats the Fire-And-Forget approach.
 
-## Playbook tasks
-  1. Download NodeJS 14.X Source
-  2. Install NodeJS
-  3. Clone the Webapp repo from github
-  4. Copy ENV file to WebApp's repo with a **hidden attribute** (.env)
-  5. Create an entry in crontab
-  6. Install WebApp JS Package
-  7. Initalize App's Database
-  8. Reboot remote servers
-
 ## Script Stages
   #### Validation Stage
     1. Argument Validation - Checks any argument was entered to the command.
@@ -24,12 +14,22 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   2. Install Ansible Package from apt repo
   3. Upgrade Ansible Version
   4. Install Ansible Community General Collection
-  5. Create Ansible directory (~/) (result: ~/ansible)
-  6. Create hosts file (~/hosts)
+  5. Create Ansible directory under ~ (result: ~/ansible)
+  6. Create hosts file under ~ (~/hosts)
   7. Update hosts file according to the environment set by the CLI command
-  8. Copy playbook file to ~/ansible
+  8. Copy playbook file to ~/ansible (~/ansible/playbook.yml)
   9. Add host key checking defaults in /etc/ansible/ansible.cfg
   10. Run Ansible playbook according to the environment set by the CLI command
+
+## Playbook tasks
+  1. Download NodeJS 14.X Source
+  2. Install NodeJS
+  3. Clone the Webapp repo from github
+  4. Copy ENV file to WebApp's repo with a **hidden attribute** (.env)
+  5. Create an entry in crontab
+  6. Install WebApp JS Package
+  7. Initalize App's Database
+  8. Reboot remote servers
   
 ## Installation
   - Clone this Repo and Navigate to the environment
