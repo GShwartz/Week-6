@@ -38,7 +38,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
   - Clone the bootcamp-app repo (https://github.com/GShwartz/bootcamp-app.git)
   - Edit IP address and other relevant details in the env file and change its name to env-prod or env-stage (depending on the environment)
   - Edit the DB & OKTA URLS in your env file
-  - Add the Load Balancer IP Address to OKTA Application re-direct (https://developer.okta.com/)
+  - Add the Load Balancer IP Address to OKTA Application re-directs (https://developer.okta.com/)
   - Copy env and playbook files to the ~ dir in the controller. (playbook-prod.yml or playbook-stage.yml)
   - Copy the changed env file to ~ on the controller
   - Copy script to ~ on the controller
