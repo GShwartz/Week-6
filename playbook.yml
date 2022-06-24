@@ -27,6 +27,7 @@
          
     - name: Copy ENV file to bootcamp-app
       ansible.builtin.copy:
+        # The env var comes from the fresh.sh script.
         src: ~/{{ env }}
         dest: ~/bootcamp-app/.env
         follow: no
