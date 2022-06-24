@@ -33,6 +33,10 @@ variable "lb_backend_ap_ip_configuration_name" {
 # ==================================================== #
 #                      Platforms                       #
 # ==================================================== #
+variable "instances" {
+  description = "Number of VMs"
+}
+
 ##### Linux OS Profile #####
 variable "publisher" {
   description = "OS Publisher"
