@@ -31,6 +31,7 @@ In my opinion, like the [AIM-120 AMRAAM](https://en.wikipedia.org/wiki/AIM-120_A
 	  ansible_ssh_user=$USER
 	  ansible_ssh_pass=$PASS
 	  ansible_sudo_pass=$PASS
+<img src="https://i.postimg.cc/5t38VLh4/hosts.jpg"> <br />
 
 =-=-=-=-=-=-=-=-=-=-=-=<br />
 FLAGS & ARGUMENTS      <br />
@@ -52,10 +53,9 @@ FLAGS & ARGUMENTS      <br />
   #### Validation Stage
     1. Arguments - Checks if any argument was entered to the command, if not, prompt on execute.
 	2. Nodes - Checks if input is higher than 1. (minimum 2 nodes)
-    2. IP Address - Checks if the IP address is valid 
-    3. ENV file - Checks if the env file passed from the CLI exists. 
+    2. ENV file - Checks if the env file passed from the CLI exists. 
        (maybe you forgot to copy it? if that's the case, re-check your env settings before copying)
-	4. Playbook file - Checks if the playbook file passed from the CLI exists. 
+    3. Playbook file - Checks if the playbook file passed from the CLI exists.
   
   #### Runtime Stage
   1. Update & Upgrade OS packages
@@ -102,13 +102,17 @@ FLAGS & ARGUMENTS      <br />
 	* If you happen to copy the script, run it and get an interpreter error then just create a new script file and paste the contents.
 	- make sure you give the new script file execution permissions. (chmod +x ./fresh.sh)
 
-## Total files Copied to the Controller machine
-
-## Total files when the script ends
+## Total files Pre-Script on Controller machine
+<img src="https://i.postimg.cc/d12pvHq7/fs-pre-script.jpg"> <br />
+	
+## Total files Post-Script on Controller machine
+<img src="https://i.postimg.cc/DyyHkPRZ/fs-post-script.jpg"> <br />
 
 ## Script Usage
+<img src="https://i.postimg.cc/wBKwvX4D/usage.jpg"> <br />
 
 ### Example of Play Recap with 2 nodes <br />
+<img src="https://i.postimg.cc/ncjKDsD2/recap.jpg"> <br />
 
 ### Crontab Entry
 <img src="https://i.postimg.cc/MGhSY2d1/crontab-entry.jpg"> <br />
