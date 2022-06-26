@@ -153,16 +153,13 @@ function get_nodes () {
 function get_ip () {
 	while :
 	do
-		echo "Staring IP Address (Example: 10.0.0.2 | 192.168.1.11): "
+		echo "[$(tput setaf 4)?$(tput setaf 7)]Staring IP Address (Example: 10.0.0.2 | 192.168.1.11): "
 		read SUBNET
 		
-		if [[ $SUBNET =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
+		if ! [[ $SUBNET =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
 		then
 			echo "[$(tput setaf 1)!$(tput setaf 7)]Wrong IP Address. (Example IP: 192.168.100.11 | 192.168.100.5 | 192.168.100.100)"
 			continue
-		
-		else
-			break
 			
 		fi
 		
@@ -184,7 +181,7 @@ function get_input () {
 	fi
 
 	# IP Address
-	if [ ${#SUBNET} -eq 0 ]
+	if [[ ${#SUBNET} -eq 0 ]] || [[ ${#SUBNET} -lt 13  ]]
 	then
 		get_ip
 	
@@ -394,7 +391,14 @@ do
 		
 		-i|--ip-address)
 			SUBNET="$2"
-						
+			
+			if [ ${#SUBNET} -lt 13 ] || [[ ${#SUBNET} -eq 0 ]]
+			then
+				echo "[$(tput setaf 1)!$(tput setaf 7)]$SUBNET is not a valid IP Address"
+				exit 1
+			
+			fi
+			
 			NETWORK="${SUBNET##*.}"
 			INDEX=`echo $SUBNET | cut -d"." -f1-3`
 			COUNT=$(( ($NETWORK + $NODES - 1) )) 
