@@ -9,72 +9,217 @@
 	2. Installing Ansible's original package
 	3. Upgrading Ansible
 	4. Installing Ansible Community General Collection
-	5. Create ansible directory in ~
-	6. Create hosts file under ~/hosts
-	7. Copy playbook file according to the environment in $1
+	5. Creating hosts file
 	8. Add host key checking defaults in under /etc/ansible/ansible.cfg
-	9. Run ansible playbook according to the environment in $1
-
+	9. Run ansible playbook
 comment
 
 # Show Help Information
 function get_help () {
-	echo "Choose between staging and production environments."
-	echo "Make sure the env file is NOT HIDDEN (no . in the filename)."
+	clear
+	echo "
+███████╗██████╗░███████╗░██████╗██╗░░██╗
+██╔════╝██╔══██╗██╔════╝██╔════╝██║░░██║
+█████╗░░██████╔╝█████╗░░╚█████╗░███████║
+██╔══╝░░██╔══██╗██╔══╝░░░╚═══██╗██╔══██║
+██║░░░░░██║░░██║███████╗██████╔╝██║░░██║
+╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═════╝░╚═╝░░╚═╝"
+	echo "##|$(tput setaf 2)Nodes$(tput setaf 7) = number of endpoints to manage"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)VM Username$(tput setaf 7) = the username for the nodes"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)Starting IP Address$(tput setaf 7) = the IP address for the first node.- the script will then"
+	echo "##|create a nodes list that ends with the number of nodes passed earlier."
+	echo "##|$(tput setaf 3)Example$(tput setaf 7): ./fresh.sh -n 2 -s 192.168.100.11 will create a hosts file that will look like:"
+	echo "##[webservers]"
+	echo "##192.168.100.11"
+	echo "##192.168.100.12"
+	echo "##"
+	echo "##[webservers:vars]"
+	echo "##ansible_connection=ssh"
+	echo "##ansible_ssh_user=$USER"
+	echo "##ansible_ssh_pass=$PASS"
+	echo "##ansible_sudo_pass=$ROOT"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)VM Password$(tput setaf 7) = password for the nodes"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)Controller root password$(tput setaf 7) = password for the fresh controller so the script"
+	echo "##|could run updates and installs"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)env filename$(tput setaf 7) = name of the env file you copied to this machine. (Example: 'env-prod')"
+	echo "##$(tput setaf 3)***Make sure the env file is NOT HIDDEN (no . in the filename).$(tput setaf 7)"
+	echo "##============================================="
+	echo "##|$(tput setaf 2)playbook filename$(tput setaf 7) = name of the playbook file you copied to this machine ('Example: playbook.yml')"
+	echo "##============================================="
+	echo "##$(tput setaf 3)FLAGS & ARGUMENTS$(tput setaf 7)    ##"				
+	echo "##$(tput setaf 6)=-=-=-=-=-=-=-=-=-=-=-=$(tput setaf 7)"
+	echo "-h, --help               Show Script information and usage details"
+	echo "-n, --nodes              Number of remote machines."
+	echo "-e, --env                Name of the env file (Example: 'env-production')."
+	echo "-p, --playbook           Name of the playbook file (Example: 'playbook.yml')."
+	echo "-u, --user               Username to be used on the remote machines."
+	echo "-i, --ip-address         Starting IP Address of the remote machines."
+	echo "-s. --skip               Skip initial updates and packages installs."
 	echo ""
-	echo "Example: ./fresh.sh staging | ./fresh.sh production"
-	echo "env file path Example: ~/env-staging | ~/env"
-	echo ""
+	echo "##|$(tput setaf 3)If no arguments passed then the script will prompt for the information when executing.$(tput setaf 7)"
+	echo "##|$(tput setaf 3)Usage Examples:$(tput setaf 7)"
+	echo "##|./fresh -n <N of Nodes> -e <envfile> -p <playbookfile> -s <startingipaddress> -u <vmusername>"
 	
-	exit 0
+	
+	if [ "$1" == "error" ]
+	then
+		exit 1
+		
+	else
+		exit 0
+	
+	fi
 }
 
+# Get env filename & validate it exists
+function get_env () {
+	# ENV filename
+	while :
+	do
+		echo "env filename (Example: 'env-prod'): "
+		read ENVFILENAME
+			
+		if ! [ -f ./"$ENVFILENAME" ]
+		then
+			echo "[$(tput setaf 1)!$(tput setaf 7)]No such file '$(tput setaf 1)$ENVFILENAME'$(tput setaf 7)"
+			continue
+			
+		else
+			echo "$(tput setaf 2)env file: OK! $(tput setaf 7)"
+			break
+			
+		fi
+	
+	done
+
+}
+
+# Get playbook filename & validate it exists
+function get_playbook () {
+	# Playbook filename
+	while :
+	do
+		echo "playbook filename (Example: 'playbook.yml'): "
+		read PLAY
+		
+		if ! [ -f ./"$PLAY" ]
+		then
+			echo "[$(tput setaf 1)!$(tput setaf 7)]No such file '$(tput setaf 1)$PLAY'$(tput setaf 7)"
+			continue
+			
+		else
+			echo "$(tput setaf 2)playbook file: OK! $(tput setaf 7)"
+			break
+			
+		fi
+	
+	done
+
+}
+
+# Get Number of Nodes
+function get_nodes () {
+	while :
+	do
+		echo "Number of nodes: "
+		read NODES
+		
+		if ! [[ $NODES -gt 0 ]]
+		then
+			echo "[$(tput setaf 1)!$(tput setaf 7)]Must be at least 2 nodes"
+			continue
+		
+		fi
+		
+		if [[ $NODES -eq 1 ]]
+		then
+			echo "[$(tput setaf 1)!$(tput setaf 7)]Must be at least 2 nodes"
+			continue
+		
+		else
+			break
+		
+		fi
+	
+	done
+}
+
+# Get Starting IP Address
+function get_ip () {
+	while :
+	do
+		echo "Staring IP Address (Example: 10.0.0.2 | 192.168.1.11): "
+		read SUBNET
+		
+		if [[ $SUBNET =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
+		then
+			echo "[$(tput setaf 1)!$(tput setaf 7)]Wrong IP Address. (Example IP: 192.168.100.11 | 192.168.100.5 | 192.168.100.100)"
+			continue
+		
+		else
+			break
+			
+		fi
+		
+	done
+	
+	NETWORK="${SUBNET##*.}"
+	INDEX=`echo $SUBNET | cut -d"." -f1-3`
+	COUNT=$(( ($NETWORK + $NODES - 1) )) 
+
+}
+
+# Get user inputs 
 function get_input () {
+	# Number of endpoints
+	if [ ${#NODES} -eq 0 ]
+	then
+		get_nodes
+	
+	fi
+
+	# IP Address
+	if [ ${#SUBNET} -eq 0 ]
+	then
+		get_ip
+	
+	fi
+	
 	# Cluster VMs Username
-	echo "Username:"
-	read USER
+	if [ ${#USER} -eq 0 ]
+	then
+		echo "VM Username:"
+		read USER	
+	
+	fi
+	
+	# Get env filename
+	if [ ${#ENVFILENAME} -eq 0 ]
+	then
+		get_env
+	
+	fi
+
+	# Get playbook filename
+	if [ ${#PLAY} -eq 0 ]
+	then
+		get_playbook
+	
+	fi
+	
+	# Cluster VNs Password
+	read -s -p "VM Password: " PASS
+	echo ""
 	
 	# Controller Root Password
 	read -s -p "Controller root password: " ROOT
 	echo ""
 	
-	# Cluster VNs Password
-	read -s -p "Machines Password: " PASS
-	echo ""
-	
-	# ENV filename
-	echo "env filename (Example: 'env-prod'): "
-	read ENVFILENAME
-		
-	if ! [ -f "$ENVFILENAME" ]
-	then
-		echo "$(tput setaf 1)No such file '$ENVFILENAME'$(tput setaf 7)"
-		echo "Type './fresh.sh help' for help"
-		exit 1
-	fi
-	
-	echo "$(tput setaf 2)Filename: OK! $(tput setaf 7)"
-	echo "$(tput setaf 5)GAME ON!! $(tput setaf 7)"
-}
-
-# Validate Environment User Input
-function input_validation () {	
-	# Input validation for environment
-	if [ "$1" == "production" ]
-	then
-		get_input	
-	
-	
-	elif [ "$1" == "staging" ]
-	then
-		get_input
-	
-	else
-		echo "$(tput setaf 1)wrong environment. $(tput setaf 7)"
-		echo "Type './fresh.sh help' for help"		
-		exit 1
-
-	fi
 }
 
 # Update & Upgrade
@@ -119,58 +264,28 @@ function install_ansible_collection () {
 	ansible-galaxy collection install community.general
 }
 
-# Create Ansible Directory
-function create_dir () {
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	echo "Creating Directory"
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	mkdir -p ~/ansible/
-}
-
 # Create hosts file under ~/
 function create_hosts () {
 	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 	echo "Creating hosts file in /etc/ansible/hosts "
 	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	touch ~/hosts
-	echo "[webservers]" >> ~/hosts
 	
-	if [[ "$1" == "production" ]]
-	then
-		# Assign IP and prefrences to each host in Production ENV
-		for i in {4..6}
-		do
-			sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
-
-		done
+	echo "$PASS" | sudo -S rm /etc/ansible/hosts
+	touch ./hosts
 	
-	else
-		# Assign IP and prefrences to each host in Staging ENV
-		for i in 4 5
-		do
-			sudo echo "10.0.1.$i ansible_user=$USER ansible_password=$PASS" >> ~/hosts
-
-		done
-
-	fi
-}
-
-# Move hosts file to /etc/ansible/hosts
-function move_hosts () {
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	echo "Moving hosts to /etc/ansible/hosts"
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
+	seq -f "$INDEX.%g" $NETWORK $COUNT >> ./hostss
+	sed -i "s/$/ $PATTERN/" ./hostss
+	sed -i '1s/^/[webservers]\n/' ./hostss
+	echo "" >> ./hostss
+	echo "[webservers:vars]" >> ./hostss
+	echo "ansible_connection=ssh" >> ./hostss
+	echo "ansible_ssh_user=$USER" >> ./hostss
+	echo "ansible_ssh_pass=$PASS" >> ./hostss
+	echo "ansible_sudo_pass=$ROOT" >> ./hostss
 	
-	sudo mv ~/hosts /etc/ansible/hosts
-}
+	mv ./hostss ./hosts
+	sudo mv ./hosts /etc/ansible/hosts
 
-# Move Playbook to ~/ansible
-function move_playbook () {
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	echo "Moving playbook.yml to /ansible"
-	echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-	
-	mv ~/playbook.yml ~/ansible/
 }
 
 # Configure Ansible to connect with Username & Password
@@ -189,74 +304,199 @@ function define_login_method () {
 	sudo mv ~/ansible.cfg /etc/ansible/ansible.cfg
 }
 
-# Run ~/ansible/playbook.yml
+# Run playbook
 function run_playbook () {
-	if [[ "$1" == "staging" ]]
-	then
-		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-		echo "Running Staging playbook..."
-		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-		
-		# Run Ansible playbook on Staging enviroment
-		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
-	
-	elif [ "$1" == "production" ]
-	then
-		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-		echo "Running Production playbook..."
-		echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-		
-		# Run Ansible playbook on Production enviroment
-		cd ~/ansible/ && ansible-playbook playbook.yml --extra-vars "env=$ENVFILENAME"
-	
-	fi
+	# Run Ansible playbook on Staging enviroment
+	ansible-playbook "$PLAY" --extra-vars="env=$ENVFILENAME"
+
 }
 
-# If the argument is empty then it means no environment passed- script ends with exit code 1.
-if [[ "$1" == "help" ]]
-then
-	# Show help information if asked to
-	get_help
+# Run the post updates & installs stages of the script
+function play_skipped () {
+	# Create hosts file
+	create_hosts
+	
+	# Enable login with username & password
+	define_login_method
+	
+	# Run ansible playbook.
+	run_playbook
+}
 
-fi
+# Run Updates & Installs before running the playbook
+function play_full () {
+	# Update controller's OS packages
+	update_upgrade
 
-# Validate Environment user input
-input_validation "$1"
+	# Installing Ansible
+	ans_install
 
-# Update & Upgrade the Controller OS
-update_upgrade
+	# Upgrade Ansible
+	upgrade_ansible
 
-# Installing Ansible
-ans_install
+	# Install Ansible Community General Collection
+	install_ansible_collection
 
-# Upgrade Ansible
-upgrade_ansible
+	# Create hosts file
+	create_hosts
 
-# Install Ansible Community General Collection
-install_ansible_collection
+	# Define Login Method
+	define_login_method
 
-# Create Ansible Directory
-create_dir
+	# Run ansible playbook.
+	run_playbook
 
-# Create hosts file
-create_hosts "$1"
+}
 
-# Move hosts file to /etc/ansible/hosts
-move_hosts
+# Look for arguments | flags
+while [[ $# -gt 0 ]]
+do
+	case "$1" in
+		-h|--help)
+			get_help
+			shift
+			shift
+			;;
+		
+		-n|--nodes)
+			NODES="$2"
+			shift
+			shift
+			;;
+			
+		-e|--env)
+			ENVFILENAME="$2"
+			if ! [ -f ./"$ENVFILENAME" ]
+			then
+				echo "[$(tput setaf 1)!$(tput setaf 7)]No such file '$(tput setaf 1)$ENVFILENAME'$(tput setaf 7)"
+				exit 1
+			fi
+			shift
+			shift
+			;;
+		
+		-p|--playbook)
+			PLAY="$2"
+			if ! [ -f ./"$PLAY" ]
+			then
+				echo "[$(tput setaf 1)!$(tput setaf 7)]No such file '$(tput setaf 1)$PLAY'$(tput setaf 7)"
+				exit 1
+			fi
+			shift
+			shift
+			;;
+		
+		-u|--user)
+			USER="$2"
+			shift
+			shift
+			;;
+		
+		-i|--ip-address)
+			SUBNET="$2"
+						
+			NETWORK="${SUBNET##*.}"
+			INDEX=`echo $SUBNET | cut -d"." -f1-3`
+			COUNT=$(( ($NETWORK + $NODES - 1) )) 
+			shift
+			shift
+			;;
+		
+		-s|--skip)
+			skip="yes"
+			shift
+			shift
+			;;
+		
+		*)
+			break
+			
+	esac
+done
 
-# Move playbook.yml to ~/ansible
-move_playbook
+# If no arguments passed then the script will ask for the information while executing.
+# The get_input function checks if any input was passed from the cli and if so
+# it skips the variable.
+get_input
 
-# Define Login Method
-define_login_method
+# Print summerization before executing
+echo ""
+echo "========================================================"
+echo "$(tput setaf 3)Nodes$(tput setaf 7): $NODES"
+echo "$(tput setaf 3)ENV File$(tput setaf 7): $ENVFILENAME"	
+echo "$(tput setaf 3)Playbook file$(tput setaf 7): $PLAY"
+echo "$(tput setaf 3)VM Username$(tput setaf 7): $USER"
+echo "$(tput setaf 3)Starting IP Address$(tput setaf 7): $SUBNET"
+echo "$(tput setaf 3)END IP Address$(tput setaf 7): $INDEX.$COUNT"
+echo "========================================================"
+echo ""
+echo "Continue? [Y/n]: " 
+read CON
 
-# Run ansible playbook according to the environment.
-run_playbook "$1"
+counter=0
+while :
+do
+	if [[ "CON" == "Y" ]] || [[ "$CON" == "y" ]]
+	then
+		echo "
+		███████╗██████╗░███████╗░██████╗██╗░░██╗
+		██╔════╝██╔══██╗██╔════╝██╔════╝██║░░██║
+		█████╗░░██████╔╝█████╗░░╚█████╗░███████║
+		██╔══╝░░██╔══██╗██╔══╝░░░╚═══██╗██╔══██║
+		██║░░░░░██║░░██║███████╗██████╔╝██║░░██║
+		╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═════╝░╚═╝░░╚═╝"
+		
+		if [[ "$skip" == "yes" ]] || [[ "$skip" == "YES" ]]
+		then
+			echo "$(tput setaf 2)========================================================$(tput setaf 7)"
+			echo "Running the short version"
+			echo "$(tput setaf 2)========================================================$(tput setaf 7)"
+			echo ""
+			play_skipped
+		
+		else
+			echo "$(tput setaf 2)========================================================$(tput setaf 7)"
+			echo "Running everything"
+			echo "$(tput setaf 2)========================================================$(tput setaf 7)"
+			echo ""
+			play_full
+		
+		fi
+			
+		break
+
+	elif [[ "CON" == "N" ]] || [[ "$CON" == "n" ]]
+	then
+		echo "Exiting..."
+		exit 1
+		
+	
+	else
+		echo "[$(tput setaf 1)!$(tput setaf 7)]Wrong Input."
+		counter++
+		
+		if [ $counter -eq 3 ]
+		then
+			"[$(tput setaf 1)!$(tput setaf 7)]That's enough... cya!"
+			exit 1
+		
+		fi
+		
+		continue
+		
+	fi
+	
+done
 
 # Removing the unsecured env file
 echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
 echo "Removing unsecured files"
 echo "$(tput setaf 3)========================================================================$(tput setaf 7)"
-rm ~/"$ENVFILENAME"
+if [ -f "$ENVFILENAME" ]
+then
+	rm "$ENVFILENAME"
 
-echo "$(tput setaf 1)FIN!$(tput setaf 7)"
+fi
+
+echo "$(tput setaf 2)FIN!$(tput setaf 7)"
+exit 0
