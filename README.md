@@ -47,7 +47,7 @@ FLAGS & ARGUMENTS      <br />
 **If no arguments passed then the script will prompt for the information when executing.**<br />
 
 ## Usage Examples:
-./fresh -n [N of Nodes] -e [envfile] -p [playbookfile] -s [startingipaddress] -u [vmusername]
+./fresh -n [N of Nodes] -e [envfile] -p [playbookfile] -s [startingipaddress] -u [vmusername] --skip yes
 
 ## Script Stages
   #### Validation Stage
