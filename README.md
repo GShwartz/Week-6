@@ -56,6 +56,8 @@ FLAGS & ARGUMENTS      <br />
     2. ENV file - Checks if the env file passed from the CLI exists. 
        (maybe you forgot to copy it? if that's the case, re-check your env settings before copying)
     3. Playbook file - Checks if the playbook file passed from the CLI exists.
+    4. IP Validation - Checks if the IP is valid, if not then exits. - if IP argument is empty, 
+       validation will be active on the prompt for IP stage.
   
   #### Runtime Stage
   1. Update & Upgrade OS packages
